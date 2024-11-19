@@ -8,12 +8,12 @@ const DepartmentPath = () => {
     // 요청 데이터 확인하기
     const params = useParams();
     console.group("useParams()의 리턴값 확인");
-    console.debug(params);
+    console.log(params);
     console.groupEnd();
 
     // 필요한 변수값과 타입 확인
-    console.debug('요청된 학과번호 값 = %s (%s)', params.id, typeof params.id);
-    console.debug('요청된 메시지 내용 = %s (%s)', params.msg, typeof params.msg);
+    console.log('요청된 학과번호 값 = %s (%s)', params.id, typeof params.id);
+    console.log('요청된 메시지 내용 = %s (%s)', params.msg, typeof params.msg);
 
     // 한 페이지에서 GET 파라미ㅓ에 따라 다르게 표현할 데이터 준비
     // 실전에서는 이 값에 해당하는 JSON을 백엔드로부터 받아와야 한다 => Ajax
