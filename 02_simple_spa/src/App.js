@@ -10,6 +10,10 @@ import {Link, Routes, Route} from "react-router-dom";
 // 하위 페이지를 담당하는 컴포넌트(직접제작)들 참조
 import Home from './pages/home';
 import About from './pages/about';
+import Main from './pages/main';
+import DepartmentGet from './pages/department_get';
+import DepartmentPath from './pages/department_path';
+
 
 function App() {
   return (
@@ -22,6 +26,11 @@ function App() {
       <nav>
         <Link to="/"> [Home] </Link>
         <Link to="/about"> [About] </Link>
+        <Link to="/main"> [Main] </Link>
+        <Link to="/department_get?id=101&msg=hello"> [컴퓨터공학과] </Link>
+        <Link to="/department_get?id=102&msg=world"> [멀티미디어학과] </Link>
+        <Link to="/department_path/201/hello"> [전자공학과] </Link>
+        <Link to="/department_path/202/world"> [기계공학과] </Link>
       </nav>
       
       <a href="/about"> 일반링크 </a>
@@ -32,6 +41,9 @@ function App() {
         {/* 첫 페이지로 사용되는 컴포넌트는 path에 "/"를 권장 */}
         <Route path="/" element={<Home/>} exact={true} />
         <Route path="/about" element={<About/>} />
+        <Route path="/main/*" element ={<Main/>} />
+        <Route path="/department_get" element ={<DepartmentGet/>} />
+        <Route path="/department_path/:id/:msg" element ={<DepartmentPath/>} />
       </Routes>
     </div>
   );
