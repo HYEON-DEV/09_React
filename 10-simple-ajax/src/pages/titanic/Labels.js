@@ -19,9 +19,9 @@ const EmbarkedLabel = styled.span`
 
 const SurvivedLabel = styled.span`
     &:before {
-        color: ${ ({survived}) => survived===true? '#090' : '#e00' };
+        background-color: ${ ({survived}) => survived===true? '#090' : '#e00' };
         content: '${ ({survived}) => survived===true ? '생존' : '사망' }';
-        color: '#fff';
+        color: #fff;
         font-weight: 600;
     }
 `;

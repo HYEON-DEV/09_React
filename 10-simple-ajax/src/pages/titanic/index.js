@@ -1,11 +1,22 @@
-import React, {memo, useState, useEffect} from "react";
+import React, {memo, useState, useEffect, useCallback} from "react";
 import styled from 'styled-components';
 import axiosHelper from '../../helpers/AxiosHelper';
 import Table from '../../components/Table';
 import Spinner from '../../components/Spinner';
-import { SexLabel, EmparkedLabel, SurvivedLabel, EmbarkedLabel } from './Labels';
+import { SexLabel, EmbarkedLabel, SurvivedLabel } from './Labels';
 
-const TitanicContainer = styled.div``;
+const TitanicContainer = styled.div`
+    .dropdown-container {
+        padding: 10px 0;
+        margin: 0;
+
+        select {
+            margin-right: 15px;
+            font-size: 16px;
+            padding: 5px 10px;
+        }
+    }
+`;
 
 const Titanic = memo( () => {
 
@@ -15,15 +26,39 @@ const Titanic = memo( () => {
     // 로딩 상태를 처리할 상태변수
     const [loading, setLoading] = useState(false);
 
+    // 드롭다운의 선택을 저장하기 위한 상태변수
+    const [sex, setSex] = useState("");
+    const [embarked, setEmbareked] = useState("");
+    const [survived, setSurvived] = useState("");
+
     // 컴포넌트 렌더링과 동시에 실행되기 위한 Hook
     useEffect( () => {
+
+        console.log(`성별: ${sex}, 탑승지: ${embarked}, 생존여부: ${survived}`);
+
+        const args = {};
+
+        if (sex) {
+            args['sex'] = sex;
+        }
+        if (embarked) {
+            args['embarked'] = embarked;
+        }
+        if (survived) {
+            args['survived'] = survived=='true';
+        }
+
+        console.group("백엔드에 전달할 파라미터");
+        console.log(args);
+        console.groupEnd();
+
         ( async() => {
             setLoading(true);
             
             let data = null;             
 
             try {
-                data = await axiosHelper.get('/titanic');
+                data = await axiosHelper.get('/titanic', args);
                 console.log(data);
             } catch(e) {
                 alert(e.message);
@@ -33,13 +68,47 @@ const Titanic = memo( () => {
             setTitanicData(data.item);
             setLoading(false);
         } )();
+    }, [sex,embarked,survived] );
+
+    const onSexSelectChange = useCallback( e => {
+        e.preventDefault();
+        // const current = e.currentTarget;
+        // const choiceIndex = current.selectedIndex;
+        // const choice = current[choiceIndex].value;
+        // console.log('선택된 값: ${choice}');
+        const choice = e.currentTarget.value;
+        console.log(`선택된 값: ${choice}`);
+        setSex(e.currentTarget.value);
     }, [] );
+
+    const onEmbarkedSelectChange = useCallback( e => setEmbareked(e.currentTarget.value), []);
+
+    const onSurvivedSelectChange = useCallback( e => setSurvived(e.currentTarget.value), []);
 
     return(
         <TitanicContainer>
             <h2> Titanic </h2>
 
             <Spinner loading={loading} />
+
+            <div className='dropdown-container'>
+                <select name='sex' onChange={onSexSelectChange}>
+                    <option value=""> -- 성별 선택 -- </option>
+                    <option value="male"> 남자 </option>
+                    <option value="female"> 여자 </option>
+                </select>
+                <select name='embarked' onChange={onEmbarkedSelectChange}>
+                    <option value=""> -- 탑승지 선택 -- </option>
+                    <option value="C"> 셰르브루 </option>
+                    <option value="Q"> 퀸즈타운 </option>
+                    <option value="S"> 사우샘프턴 </option>
+                </select>
+                <select name='survived' onChange={onSurvivedSelectChange}>
+                    <option value=""> -- 생존여부 선택 -- </option>
+                    <option value="true"> 생존 </option>
+                    <option value="false"> 사망 </option>
+                </select>
+            </div>
 
             <Table>
                 <thead>
