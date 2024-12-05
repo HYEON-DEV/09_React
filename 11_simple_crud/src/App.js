@@ -13,7 +13,7 @@ import { Reset } from 'styled-reset';
 import GlobalStyles from './components/GlobalStyles';
 
 /** 하위 페이지를 담당하는 컴포넌트(직접제작)들 참조 */
-import Department from './pages/Department';
+import Department from './pages/department';
 
 const App = memo(() => {
     return (
