@@ -1,0 +1,21 @@
+import { configureStore } from '@reduxjs/toolkit';
+
+import TitanicSlice from './slices/TitanicSlice';
+
+const store = configureStore({
+    
+    // reducer 설정 => Slice 객체들을 나열하여  설정
+    // Slice => 백엔드와 통신하는 비동기 처리를 수행하는 객체
+    //          백엔드 URL 1개당 파일 하나씩 생성
+    reducer: {
+        TitanicSlice
+    },
+
+    // 직렬화 가능한 값을 체크하는 미들웨어를 사용하지 않는다 => for Ajax
+    // 버전 많이 탐
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        serializableCheck: false,   
+    })
+});
+
+export default store;
