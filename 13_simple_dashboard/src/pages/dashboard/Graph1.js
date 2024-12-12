@@ -9,6 +9,7 @@
 import React, {memo, useMemo} from "react";
 import styled from 'styled-components';
 import { useSelector } from "react-redux";
+import mq from '../../components/MediaQuery';
 
 /** chart.js */
 // 나머지 공통항목  |  BarElement: 막대그래프
@@ -20,12 +21,17 @@ Chart.register(CategoryScale, LinearScale, Title, Tooltip, Legend, BarElement);
 
 const Graph1Container = styled.div`
     /* background-color: #d9ddfc; */
-    flex: 1 0 50%;  // 상황이 되면 커져도 되고 작아지지는 말고 50%로
+    /* flex: 1 0 50%;  // 상황이 되면 커져도 되고 작아지지는 말고 50%로 */
+    width: 50%;
+
+    ${mq.maxWidth('md')`
+        width: 100%;
+    `}
 
     .container {
         /* background-color: #fff; */
         margin: 10px;
-        /* height: 50px; */
+        height: 300px;
     }
 `;
 
@@ -51,16 +57,16 @@ const Graph1 = memo( () => {
             return acc;
         }, {} );
 
-        console.log(ageData);
+        // console.log(ageData);
 
         const keys = Object.keys(ageData).sort();
-        console.log(keys);
+        // console.log(keys);
 
         const values = keys.map( (v,i) => ageData[v] );
-        console.log(values);
+        // console.log(values);
 
         const result = {keys, values};
-        console.log(result);
+        // console.log(result);
 
         return result;
     }, [item] );
@@ -71,35 +77,36 @@ const Graph1 = memo( () => {
                 {/* {keys && JSON.stringify(keys)} */}
                 {/* <br/> */}
                 {/* {values && JSON.stringify(values)} */}
-
-                <Bar 
-                data={{ 
-                    labels: keys,   // x축
-                    datasets: [{
-                        label: "명",
-                        data: values,
-                        backgroundColor: '#d9ddfc',
-                        borderColor: 'rgba(0,0,0,0.4)',
-                        borderWidth: 1
-                    }]
-                }}
-                options={{
-                    reponsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                        },
-                        title: {
-                            display: true,
-                            text: '연령별 탑승객 집계',
-                            font: {
-                                size: 18,
-                                color: '#000'
+                { keys && values && (
+                    <Bar 
+                    data={{ 
+                        labels: keys,   // x축
+                        datasets: [{
+                            label: "명",
+                            data: values,
+                            backgroundColor: '#d9ddfc',
+                            borderColor: 'rgba(0,0,0,0.4)',
+                            borderWidth: 1
+                        }]
+                    }}
+                    options={{
+                        reponsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                            },
+                            title: {
+                                display: true,
+                                text: '연령별 탑승객 집계',
+                                font: {
+                                    size: 18,
+                                    color: '#000'
+                                }
                             }
                         }
-                    }
-                }} />
+                    }} />
+                ) }
             </div>
         </Graph1Container>
     );
